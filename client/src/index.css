@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-apple-black antialiased font-sans overflow-x-hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight font-semibold;
+  }
+}
+
+@layer components {
+  .apple-nav-glass {
+    @apply bg-[rgba(255,255,255,0.7)] backdrop-blur-md border-b border-apple-border/50;
+    @supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+      background-color: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+    }
+  }
+
+  .apple-card {
+    @apply bg-apple-gray rounded-[18px] p-8 transition-transform duration-300 hover:scale-[1.01] overflow-hidden;
+  }
+
+  .apple-button-primary {
+    @apply px-4 py-2 rounded-full font-sans text-sm font-medium transition-all duration-200 
+           bg-apple-blue text-white hover:bg-apple-blueHover flex items-center justify-center gap-2;
+  }
+
+  .apple-button-secondary {
+    @apply px-4 py-2 rounded-full font-sans text-sm font-medium transition-all duration-200 
+           bg-apple-gray text-apple-black hover:bg-[#e8e8ed] flex items-center justify-center gap-2;
+  }
+
+  .apple-input {
+    @apply w-full px-4 py-3 bg-white border border-apple-border rounded-xl focus:border-apple-blue focus:ring-1 focus:ring-apple-blue outline-none transition-all font-sans text-apple-black placeholder:text-apple-grayDark text-[17px];
+  }
+  
+  .apple-input-gray {
+    @apply w-full px-4 py-3 bg-apple-gray border border-transparent rounded-xl focus:border-apple-border outline-none transition-all font-sans text-apple-black placeholder:text-apple-grayDark text-[17px];
+  }
+
+  .apple-link {
+    @apply text-apple-blue hover:underline font-medium text-sm;
+  }
+}
+
+/* Scrollbar hiding for that clean Mac feel */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
