@@ -9,6 +9,8 @@ const taskRoutes = require('./routes/tasks');
 const dashboardRoutes = require('./routes/dashboard');
 const extraRoutes = require('./routes/extras');
 
+const path = require('path');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -24,6 +26,15 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/extras', extraRoutes);
+
+// Serve static assets in production
+const clientDistPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientDistPath));
+
+// Catch-all route to serve index.html for SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
