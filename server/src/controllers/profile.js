@@ -1,14 +1,18 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const User = require('../models/User');
 
 const updateProfile = async (req, res) => {
   const { name, bio, phone, avatar } = req.body;
   try {
-    const user = await prisma.user.update({
-      where: { id: req.user.id },
-      data: { name, bio, phone, avatar },
-      select: { id: true, email: true, name: true, role: true, bio: true, phone: true, avatar: true },
-    });
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, bio, phone, avatar },
+      { new: true, select: '-password' }
+    );
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
     res.json(user);
   } catch (error) {
     res.status(400).json({ message: 'Error updating profile', error: error.message });
@@ -17,13 +21,13 @@ const updateProfile = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
-      select: { id: true, email: true, name: true, role: true, bio: true, phone: true, avatar: true },
-    });
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching profile' });
+    res.status(500).json({ message: 'Error fetching profile', error: error.message });
   }
 };
 

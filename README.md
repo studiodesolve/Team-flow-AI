@@ -10,11 +10,11 @@ A premium, full-stack task management application with Role-Based Access Control
 - **RBAC**: Distinct roles for Admins and Members to ensure proper permissions.
 - **Modern UI**: Dark mode aesthetic with glassmorphism, fluid animations, and responsive layout.
 
-## 🛠️ Tech Stack
+### 🛠️ Tech Stack
 
 - **Frontend**: React, Vite, Vanilla CSS, Lucide Icons, Axios.
-- **Backend**: Node.js, Express, Prisma ORM.
-- **Database**: SQLite (Local Dev) / PostgreSQL (Production).
+- **Backend**: Node.js, Express, Mongoose ODM.
+- **Database**: MongoDB (Atlas for Production).
 - **Security**: JWT, BcryptJS.
 
 ## 📦 Getting Started
@@ -33,7 +33,6 @@ cd ethara_AI
 ```bash
 cd server
 npm install
-npx prisma migrate dev --name init
 npm start
 ```
 *The server will run on [http://localhost:5001](http://localhost:5001)*
@@ -48,11 +47,14 @@ npm run dev
 
 ## 🌐 Deployment
 
-This app is ready to be deployed on **Railway**:
+This app is configured for deployment on **Railway**:
 1. Connect your GitHub repo to Railway.
-2. Add a PostgreSQL database service.
-3. Set the environment variables (`DATABASE_URL`, `JWT_SECRET`).
-4. Railway will automatically detect the `server` and `client` folders if configured as a monorepo or two separate services.
+2. The project includes a `railway.json` for automatic configuration.
+3. Set the environment variables in Railway dashboard:
+   - `MONGODB_URI`: Your MongoDB Atlas connection string.
+   - `JWT_SECRET`: A secure string for token signing.
+   - `EMAIL_USER` & `EMAIL_PASS`: (Optional) For automated emails.
+4. Railway will build the client and start the server automatically.
 
 ## 📝 License
 MIT
