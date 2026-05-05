@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { projectService } from '../services/api';
-import { Search } from 'lucide-react';
+import { Search, Users, CheckSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -102,10 +102,19 @@ const Projects = () => {
                   {project.description || 'No description provided.'}
                 </p>
                 
-                <div className="flex items-center gap-4 text-[13px] text-apple-grayDark mt-auto">
-                  <span>{project.membersCount || 0} Members</span>
-                  <span>•</span>
-                  <span>{project.tasksCount || 0} Tasks</span>
+                <div className="flex items-center gap-6 mt-auto pt-6 border-t border-apple-border/30">
+                  <div className="flex items-center gap-2 text-[13px] text-apple-grayDark font-semibold">
+                     <div className="w-6 h-6 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center">
+                       <Users size={14} />
+                     </div>
+                    {project.membersCount || 1} Members
+                  </div>
+                  <div className="flex items-center gap-2 text-[13px] text-apple-grayDark font-semibold">
+                     <div className="w-6 h-6 bg-green-50 text-green-500 rounded-lg flex items-center justify-center">
+                       <CheckSquare size={14} />
+                     </div>
+                    {project.tasksCount || 0} Tasks
+                  </div>
                 </div>
               </Link>
             </motion.div>

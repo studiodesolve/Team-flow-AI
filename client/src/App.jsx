@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Hexagon, Menu } from 'lucide-react';
@@ -13,6 +13,14 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import Profile from './pages/Profile';
 import NotificationBell from './components/NotificationBell';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -41,7 +49,9 @@ const LayoutWrapper = ({ children }) => {
   const { logout, user } = useAuth();
   const location = useLocation();
   
-  if (!user) return children;
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+  
+  if (!user || isAuthPage) return children;
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans">
@@ -96,6 +106,7 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <LayoutWrapper>
           <Routes>
             <Route path="/login" element={<Login />} />

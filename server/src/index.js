@@ -1,8 +1,12 @@
+// Load environment variables. .env is for local development only!
 require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
+// Route imports - organized by feature area
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const taskRoutes = require('./routes/tasks');
@@ -10,20 +14,21 @@ const dashboardRoutes = require('./routes/dashboard');
 const extraRoutes = require('./routes/extras');
 const profileRoutes = require('./routes/profile');
 
-const path = require('path');
-
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+// Database connection logic
+// Using Mongoose for schema-based data modeling
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
-  console.error('CRITICAL: MONGODB_URI is not defined in environment variables!');
+  console.warn('⚠️  MONGODB_URI is missing. Database operations will fail.');
 }
 
 if (!process.env.JWT_SECRET) {
-  console.error('CRITICAL: JWT_SECRET is not defined in environment variables!');
+  console.warn('⚠️  JWT_SECRET is missing. Authentication will fail.');
 }
 
 app.get('/api/health', (req, res) => {
@@ -40,10 +45,9 @@ app.get('/api/health', (req, res) => {
 });
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('Successfully connected to MongoDB'))
+  .then(() => console.log('✅ Connected to MongoDB Atlas cluster'))
   .catch(err => {
-    console.error('Could not connect to MongoDB. Please check your MONGODB_URI.');
-    console.error(err.message);
+    console.error('❌ MongoDB Connection Error:', err.message);
   });
 
 // Use Routes
@@ -73,5 +77,6 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server listening on port ${PORT}`);
+  console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
