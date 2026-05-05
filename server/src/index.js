@@ -61,7 +61,7 @@ console.log(`Serving static files from: ${clientDistPath}`);
 app.use(express.static(clientDistPath));
 
 // Catch-all route to serve index.html for SPA
-app.get('*', (req, res) => {
+app.use((req, res) => {
   const indexPath = path.join(clientDistPath, 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
